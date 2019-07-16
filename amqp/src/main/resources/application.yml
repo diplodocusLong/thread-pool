@@ -1,0 +1,5 @@
+spring:
+  mail:
+    username: nevermore_sf@aliyun.com
+    password: ll6984303
+    host: smtp.aliyun.com
