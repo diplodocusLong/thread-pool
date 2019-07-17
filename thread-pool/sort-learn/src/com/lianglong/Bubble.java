@@ -13,34 +13,6 @@ public class Bubble {
 
     public static void main(String[] args) {
 
-        int[] ints = new int[8];
-        Random random = new Random();
-        //初始化数组
-        for (int i = 0; i < ints.length; i++) {
-            ints[i] = random.nextInt(80);
-        }
-     /*   //复制一份 选择排序用
-        int[] forSelect = ints.clone();
-        int[] forcible = ints.clone();
-        int[] forInsert = ints.clone();
-        long start = System.currentTimeMillis();
-        int[] quick = quick(0, ints.length, ints);
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
-
-
-        select(forSelect);
-
-        bubble(forcible);
-
-        insert(forInsert);*/
-
-        int[] merge = merge(ints, 0, ints.length-1);
-
-        for (int i = 0; i < merge.length; i++) {
-            System.out.println(merge[i]);
-
-        }
 
     }
 
@@ -199,30 +171,30 @@ public class Bubble {
         return a;
     }
 
-    public static void toMerge(int[] a, int low, int mid, int high) {
+    public static void toMerge(int[] ints, int low, int mid, int high) {
         int[] temp = new int[high-low+1];
         int i= low;
         int j = mid+1;
         int k=0;
         // 把较小的数先移到新数组中
         while(i<=mid && j<=high){
-            if(a[i]<a[j]){
-                temp[k++] = a[i++];
+            if(ints[i]<ints[j]){
+                temp[k++] = ints[i++];
             }else{
-                temp[k++] = a[j++];
+                temp[k++] = ints[j++];
             }
         }
         // 把左边剩余的数移入数组
         while(i<=mid){
-            temp[k++] = a[i++];
+            temp[k++] = ints[i++];
         }
         // 把右边边剩余的数移入数组
         while(j<=high){
-            temp[k++] = a[j++];
+            temp[k++] = ints[j++];
         }
         // 把新数组中的数覆盖nums数组
         for(int x=0;x<temp.length;x++){
-            a[x+low] = temp[x];
+            ints[x+low] = temp[x];
         }
     }
 
