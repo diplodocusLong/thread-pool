@@ -1,18 +1,19 @@
 package com.lianglong.amqp.service;
 
 
+import com.rabbitmq.client.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.time.LocalDateTime;
+import java.io.IOException;
 import java.util.Date;
 
 @Service
@@ -20,24 +21,20 @@ public class RabbitmqSend {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
+
     @Autowired
     JavaMailSenderImpl sender;
 
-       @Scheduled(cron = "* 0/30 * * * *")
-       public void sentMessage(){
+    private  Integer id=0;
 
-           rabbitTemplate.convertAndSend("exchange.direct","lianglong", new Date());
+    @Scheduled(cron = "0 */1 * * * ?")
+    public void sentMessage() {
+        rabbitTemplate.convertAndSend("exchange.direct", "lianglong", new Date(), new CorrelationData(id++ +""));
+    }
 
-       }
-
-
-
-
-       @RabbitListener(queues = "lianglong")
-       public void consumerMessage(Date time){
-
-           MimeMessage mimeMessage = sender.createMimeMessage();
-
+    @RabbitListener(queues = "lianglong")
+    public void consumerMessage(Date time, Channel channel, Message message) {
+           /*MimeMessage mimeMessage = sender.createMimeMessage();
            MimeMessageHelper mimeMessageHelper = null;
            try {
                mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
@@ -52,13 +49,34 @@ public class RabbitmqSend {
 
                mimeMessageHelper.setText(""+time+"/n"+ LocalDateTime.now());
 
-               sender.send(mimeMessage);
            } catch (MessagingException e) {
                e.printStackTrace();
            }
+        return "收到";*/
+        Logger logger = LoggerFactory.getLogger(this.getClass());
 
+        logger.info("time is:{}", time);
+        try {
 
+            logger.info("更新数据库");
 
-       }
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 
+        } catch (IOException e) {
+            //如果是交还过的信息
+            try {
+                if (message.getMessageProperties().getRedelivered()) {
+
+                    channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+                } else {
+
+                    channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
 }
