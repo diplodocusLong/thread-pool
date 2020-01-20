@@ -1,0 +1,8 @@
+
+T
+squid:S106("9Replace this use of System.out or System.err by a logger.(´‹¹öþÿÿÿÿ
+?squid:S11480"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+O
+squid:S106m"9Replace this use of System.out or System.err by a logger.(‘˜¨ª
+?squid:S11483"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+zsquid:UselessImportCheck"QRemove this unused import 'org.springframework.format.annotation.DateTimeFormat'.(‡ˆôƒøÿÿÿÿ

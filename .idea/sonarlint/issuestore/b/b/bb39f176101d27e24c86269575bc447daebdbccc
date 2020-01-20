@@ -1,0 +1,8 @@
+
+Lsquid:S1751j"5Remove this "break" statement or make it conditional.(›ûä·
+?squid:S1148Y"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+psquid:S2293,"YReplace the type specification in this constructor call with the diamond operator ("<>").(…®®à
+?squid:S1148@"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+]squid:S2142X"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€
+?squid:S1148("#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+]squid:S2142?"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€
